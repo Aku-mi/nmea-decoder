@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col col-md-2">
+        <div class="card">
+            <div class="card-body">
+                <a href="/del/all" class="btn btn-success btn-sm">Delete All</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-md-10">
+        {{#if tasks}}
+        {{#each tasks}}
+
+        <div class="card">
+            <div class=" card-body">
+                <h2 class="card-title">Secuence: {{this.secuence}}</h2>
+                <p class="card-text">Latitude: {{this.lat}}</p>
+                <p class="card-text">Longitude: {{this.lon}}</p>
+                <p class="card-text">Date: {{this.date}}</p>
+                <a href="/delete/{{this._id}}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </div>
+        <br>
+
+        {{/each}}
+        {{/if}}
+    </div>
+</div>

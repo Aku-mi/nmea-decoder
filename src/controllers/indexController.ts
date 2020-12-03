@@ -85,16 +85,30 @@ class IndexController {
 
     public async view(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
-        console.log(id);
         const task = await NMEA.findOne({ _id: id });
-
-        console.log(task);
-
-
         res.render('view', {
             title: 'View',
             task
         })
+    }
+
+    public async edit(req: Request, res: Response): Promise<void> {
+        const tasks: Secuence[] = await NMEA.find();
+        res.render('edit', {
+            title: 'Admin',
+            tasks
+        });
+    }
+
+    public async delete(req: Request, res: Response): Promise<void> {
+        const { id } = req.params;
+        await NMEA.findOneAndDelete({ _id: id });
+        res.redirect('/edit');
+    }
+
+    public async deleteAll(req: Request, res: Response): Promise<void> {
+        await NMEA.deleteMany({});
+        res.redirect('/edit');
     }
 
 }
