@@ -11,21 +11,19 @@ class IndexController {
         try {
             let msg = "";
             const aisDecoder = new AisDecoder();
-            aisDecoder.on('error', err => { });
+            aisDecoder.on('error', e => { });
             aisDecoder.on('data', (decodedMessage) => {
                 msg = decodedMessage;
             });
             aisDecoder.write(secuence);
             const deco = JSON.parse(msg);
-            const lat = parseFloat(deco.lat).toFixed(5);
-            const lon = parseFloat(deco.lon).toFixed(5);
-            const date = new Date();
+            const lat = parseFloat(deco.lat).toFixed(6);
+            const lon = parseFloat(deco.lon).toFixed(6);
 
             const info: Secuence = new NMEA({
                 secuence,
                 lat,
-                lon,
-                date
+                lon
             });
 
             await info.save();
@@ -43,14 +41,25 @@ class IndexController {
 
     public async index(req: Request, res: Response): Promise<void> {
         const secuences: Secuence[] = await NMEA.find();
-        const aux = secuences.reverse()[0];
-        let last = {};
-        if (aux)
-            last = aux;
+        const aux = secuences.reverse();
+        let last: Secuence[] = [
+            new NMEA({
+                secuence: "",
+                lat: 40,
+                lon: -8
+            })
+        ];
+        if (aux.length > 0) {
+            last = [
+                aux[0]
+            ]
+        }
 
         res.render('index', {
             title: 'Home',
-            last
+            last,
+            zoom: aux.length > 0 ? 11 : 1.5,
+            empty: aux.length > 0 ? true : false
         });
     }
 
@@ -79,16 +88,20 @@ class IndexController {
         const secuences: Secuence[] = await NMEA.find();
         res.render('general', {
             title: 'General',
-            secuences
+            secuences,
+            zoom: 2
         });
     }
 
     public async view(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
-        const task = await NMEA.findOne({ _id: id });
+        const task = [
+            await NMEA.findOne({ _id: id })
+        ];
         res.render('view', {
             title: 'View',
-            task
+            task,
+            zoom: 11
         })
     }
 

@@ -3,45 +3,10 @@
     defer>
     </script>
 <script>
-
     const data = {{{ json secuences }}};
-
-    function addMarker(coords, map, info) {
-        let marker = new google.maps.Marker({
-            position: coords,
-            map,
-            icon: "https://i.ibb.co/zVNGcnT/yate.png"
-        });
-        let aux = '<div><h5> ' + info + '</h5></div>';
-        let infoWindow = new google.maps.InfoWindow({
-            content: aux
-        });
-        marker.addListener('click', () => {
-            infoWindow.open(map, marker);
-        });
-    }
-
-    function initMap() {
-        let options = {
-            zoom: 2,
-            center: { lat: 40, lng: -8 },
-            disableDefaultUI: true,
-            disableDoubleClickZoom: true,
-            fullscreenControl: true,
-            draggable: true,
-            mapTypeControl: true,
-            mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
-            navigationControl: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        let map = new google.maps.Map(document.getElementById("map"), options);
-
-        for (let i = 0; i < data.length; i++) {
-            addMarker({ lat: data[i].lat, lng: data[i].lon }, map, data[i].date);
-        }
-
-    }
+    const zoom = {{{ json zoom }}}
 </script>
+<script src="/map.js"></script>
 
 <style>
     #map {

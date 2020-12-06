@@ -8,10 +8,22 @@ export interface Secuence extends mongoose.Document {
 }
 
 const NMEASchema = new Schema({
-    secuence: String,
-    lat: Number,
-    lon: Number,
-    date: Date
+    secuence: {
+        type: String,
+        required: true
+    },
+    lat: {
+        type: Number,
+        required: true
+    },
+    lon: {
+        type: Number,
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 export default model<Secuence>('Secuence', NMEASchema);

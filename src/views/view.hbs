@@ -1,13 +1,15 @@
 <div class="row">
     <div class="col col-md-12">
+        {{#each task}}
         <div class="card">
             <div class=" card-body">
-                <h2 class="card-title">Sentence: {{task.secuence}}</h2>
-                <p class="card-text">Latitude: {{task.lat}}</p>
-                <p class="card-text">Longitude: {{task.lon}}</p>
-                <p class="card-text">Date: {{task.date}}</p>
+                <h2 class="card-title">Sentence: {{this.secuence}}</h2>
+                <p class="card-text">Latitude: {{this.lat}}</p>
+                <p class="card-text">Longitude: {{this.lon}}</p>
+                <p class="card-text">Date: {{this.date}}</p>
             </div>
         </div>
+        {{/each}}
     </div>
 </div>
 <br>
@@ -17,40 +19,10 @@
         defer>
         </script>
     <script>
-
-        const last = {{{ json task }}};
-
-        function addMarker(coords, map, info) {
-            let marker = new google.maps.Marker({
-                position: coords,
-                map,
-                icon: "https://i.ibb.co/zVNGcnT/yate.png"
-            });
-            let aux = '<div><h5> ' + info + '</h5></div>';
-            let infoWindow = new google.maps.InfoWindow({
-                content: aux
-            });
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
-        }
-
-        function initMap() {
-            let options = {
-                zoom: 11,
-                center: { lat: last.lat, lng: last.lon },
-                disableDefaultUI: true,
-                disableDoubleClickZoom: true,
-                fullscreenControl: false,
-                draggable: true,
-                mapTypeControl: true,
-                mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
-                navigationControl: true,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            let map = new google.maps.Map(document.getElementById("map"), options);
-            addMarker({ lat: last.lat, lng: last.lon }, map, last.date);
-        }
+        const data = {{{ json task }}};
+        const zoom = {{{ json zoom }}};
+    </script>
+    <script src="/map.js">
     </script>
 
     <style>
